@@ -1,5 +1,6 @@
 const express = require("express");
 const {getAllMovies, createMovie, getMovie, updateMovie, deleteMovie, getHighestRated, getMovieStats, getMovieByGenre} = require("../controllers/moviesController");
+const {protect} = require("../controllers/authController");
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.route("/movies-by-genre/:genre")
 
 //ROUTE HANDLERS
 router.route("/")
-    .get(getAllMovies)
+    .get(protect, getAllMovies)
     .post(createMovie)
 
 //PARAM MIDDLEWARE APPLIES TO THESE ROUTES

@@ -36,7 +36,8 @@ const userSchema = new mongoose.Schema({
             },
             message: "Password and Confirm Password does not match"
         }
-    }
+    },
+    passwordChangedAt: Date
 })
 
 //DOCUMENT MIDDLEWARE
@@ -49,6 +50,17 @@ userSchema.pre("save", async function (next) {
     this.confirmPassword = undefined;
     next();
 })
+
+//creates a custom method for the model
+userSchema.methods.isPasswordChanged = async function (JWTTimestamp) {
+    if(this.passwordChangedAt) {
+        const pwChangedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10)
+        console.log(pwChangedTimestamp, JWTTimestamp)
+
+        return JWTTimestamp < pwChangedTimestamp;
+    }
+    return false
+}
 
 const User = mongoose.model("User", userSchema);
 

@@ -28,6 +28,14 @@ const validationErrorHandler = (err) => {
     return new CustomError(msg, 400)
 }
 
+const handleExpiredJWT = (err) => {
+    return new CustomError("JWT has expired please log in again", 401)
+}
+
+const handleWebTokenError = (err) => {
+    return new CustomError(err.message, 400)
+}
+
 const prodErrors = (res, error) => {
     if (error.isOperational) {
         res.status(error.statusCode).json({
@@ -50,14 +58,12 @@ const globalErrorHandler = (error, req, res, next) => {
         devErrors(res, error);
     } else if (process.env.NODE_ENV === "production") {
         // console.log(error)
-        if (error.name === "CastError") {
-            error = castErrorHandler(error)
-            // console.log(err)
-        } else if (error.code === 11000) {
-            error = duplicateKeyErrorHandler(error)
-        } else if (error.name === "ValidationError") {
-            error = validationErrorHandler(error)
-        }
+        if (error.name === "CastError") error = castErrorHandler(error)
+        if (error.code === 11000) error = duplicateKeyErrorHandler(error)
+        if (error.name === "ValidationError") error = validationErrorHandler(error)
+        if(error.name === "TokenExpiredError") error = handleExpiredJWT(error)
+        if(error.name === "JsonWebTokenError") error = handleWebTokenError(error)
+        
         prodErrors(res, error);
     }
     
