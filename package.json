@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-with-express",
+  "version": "1.0.0",
+  "description": "nodejs with express tutorial",
+  "main": "index.js",
+  "scripts": {
+    "start": "SET NODE_ENV=development& nodemon server.js",
+    "start_prod": "SET NODE_ENV=production& nodemon server.js"
+  },
+  "author": "Xyron",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.3",
+    "morgan": "^1.10.0",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
