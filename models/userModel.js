@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
         }
     },
     photo: String,
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    },
     password: {
         type: String,
         required: [true, "Please enter a password"],
@@ -46,7 +51,7 @@ userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
     //encrypt password
-    this.password = await bcrypt.hash(this.password, 5);
+    this.password = await bcrypt.hash(this.password, process.env.HASH_SALT);
     this.confirmPassword = undefined;
     next();
 })

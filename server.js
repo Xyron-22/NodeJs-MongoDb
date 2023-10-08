@@ -11,7 +11,7 @@ process.on("uncaughtException", (error) => {
 const app = require("./app");
 
 // console.log(app.get("env"))
-console.log(process.env.NODE_ENV)
+
 mongoose.connect(process.env.CONN_STR, {
     useNewUrlParser: true
 }).then((conn) => {

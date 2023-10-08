@@ -3,7 +3,6 @@ const asyncErrorHandler = require("../utils/async-error-handler");
 const jwt = require("jsonwebtoken");
 const CustomError = require("../utils/custom-error");
 const bcrypt = require("bcryptjs");
-const util = require("util");
 
 const signToken = (id) => {
     return jwt.sign({id}, process.env.SECRET_STR, {
@@ -12,7 +11,6 @@ const signToken = (id) => {
 }
 
 const signup = asyncErrorHandler(async (req, res, next) => {
-    
     const newUser = await User.create(req.body);
 
     const token = signToken(newUser._id)
@@ -53,7 +51,7 @@ const protect = asyncErrorHandler(async (req, res, next) => {
     const testToken = req.headers.authorization;
     let token;
 
-    if(testToken && testToken.startsWith("bearer")) {
+    if(testToken && testToken.startsWith("Bearer")) {
         token = testToken.split(" ")[1];
     }
     if(!token) {
@@ -65,6 +63,7 @@ const protect = asyncErrorHandler(async (req, res, next) => {
 
     //if user exist
     const user = await User.findById(decodedToken.id)
+    
     if (!user) {
         const error = new CustomError("No user found", 401)
         return next(error)
