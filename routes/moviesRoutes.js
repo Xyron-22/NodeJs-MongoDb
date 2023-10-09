@@ -1,6 +1,6 @@
 const express = require("express");
 const {getAllMovies, createMovie, getMovie, updateMovie, deleteMovie, getHighestRated, getMovieStats, getMovieByGenre} = require("../controllers/moviesController");
-const {protect} = require("../controllers/authController");
+const {protect, restrict} = require("../controllers/authController");
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ router.route("/")
 router.route("/:id")
     .get(getMovie)
     .patch(updateMovie)
-    .delete(deleteMovie)
+    .delete(protect, restrict("admin"), deleteMovie)
 
 
 
